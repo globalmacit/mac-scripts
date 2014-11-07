@@ -1,0 +1,5 @@
+# Mac Scripts
+
+This repo contains a bunch of scripts that I have found useful for managing Macs. The content is not terribly original as I am not a very talented programmer. Most of the content is relatively original. Where I have grabbed something useful from another user, I do my best to credit that user. In the case that the item is common and has multiple sources, I don't bother. If you believe that something here is your original work, please let me know and I will consider attribution since that must be incredibly important to you to have made the effort.
+
+If I am doing Git wrong, please let me know. If you are Allister Banks, you can reach me directly and mentor me on the ways of Git, but please don't publically shame me. I love you and it would hurt my heart to have you call me out to the MacAdmin community. I am dumb but I want to learn.
