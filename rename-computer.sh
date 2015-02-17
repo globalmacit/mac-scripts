@@ -14,7 +14,8 @@ COMPANY="WidgetCo"
 
 ### Let the robot do the work.
 #	Grab some info from the system.
-SYSTEM=`system_profiler SPHardwareDataType | grep "Model Identifier:" | awk '{print $3;}' | sed 's/[0-9][,]*//g'`
+SYSTEM=`system_profiler SPHardwareDataType | grep "Model Identifier:" | awk '{print $3;}' | sed 's/[0-9][,]*//g' | sed 's/Macmini/MM/g' | sed 's/MacBookPro/MBP/g' | sed 's/MacBookAir/MBA/g' | sed 's/MacBook/MB/g'`
+
 
 #	Get the currently logged in user name.
 NAME=`finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //'`
