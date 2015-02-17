@@ -9,25 +9,28 @@
 #	on a standard OS X client system.
 
 
-#	Fill out the following three items, using proper capitalization.
-FIRST_NAME="Steve"
-LAST_NAME="Smith"
+#	Provide the company abbreviated name.
 COMPANY="WidgetCo"
 
-#	Let the robot do the work.
+### Let the robot do the work.
+#	Grab some info from the system.
+SYSTEM=`system_profiler SPHardwareDataType | grep "Model Identifier:" | awk '{print $3;}' | sed 's/[0-9][,]*//g'`
+
+#	Get the currently logged in user name.
+NAME=`finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //'`
+
+#	A simple function to adjust the case of the variable outputs.
 makelower() {
-echo $1 | tr '[:upper:]' '[:lower:]'
+echo $1 | tr '[:upper:]' '[:lower:]' | sed 's/ //g'
 }
 
-SYSTEM=`system_profiler SPHardwareDataType | grep "Model Identifier:" | awk '{print $3;}' | sed 's/[0-9][,]*//g'`
-L_FIRST_NAME=`makelower $FIRST_NAME`
-L_LAST_NAME=`makelower $LAST_NAME`
+L_NAME=`makelower $NAME` 
 L_COMPANY=`makelower $COMPANY`
 L_SYSTEM=`makelower $SYSTEM`
 
-/usr/sbin/scutil --set ComputerName $FIRST_NAME$LAST_NAME-$SYSTEM-$COMPANY
-/usr/sbin/scutil --set LocalHostName $L_FIRST_NAME$L_LAST_NAME-$L_SYSTEM-$L_COMPANY
-/usr/sbin/scutil --set HostName $L_FIRST_NAME$L_LAST_NAME-$L_SYSTEM-$L_COMPANY.local
+/usr/sbin/scutil --set ComputerName $NAME-$SYSTEM-$COMPANY
+/usr/sbin/scutil --set LocalHostName $L_NAME-$L_SYSTEM-$L_COMPANY
+/usr/sbin/scutil --set HostName $L_NAME-$L_SYSTEM-$L_COMPANY.local
 
 #	Tell me the results.
 status=$?
