@@ -7,8 +7,7 @@
 #
 #  Uses sqlite3 to query and extract Apple Mail Previous Recipients list
 #  Exports to a CSV file
-#
-#  Because I am a hack, this needs to be run from the User's Home Directory.
+
 
 #  Define our local user
 USER="$(whoami)"
