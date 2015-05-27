@@ -26,6 +26,7 @@ FILEOUTPUT="$DIR/$FILE"
 
 # Okay, robots. Do your thing.
 /usr/bin/sqlite3 /Users/"$USER"/Library/Application\ Support/AddressBook/MailRecents-v4.abcdmr <<!
+.headers on
 .mode csv
 .output "$FILEOUTPUT"
 select ZLASTNAME, ZFIRSTNAME, ZEMAIL from ZABCDMAILRECENT;
