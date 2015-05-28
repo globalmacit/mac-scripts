@@ -7,6 +7,11 @@
 #
 #  Uses sqlite3 to query and extract Apple Mail Previous Recipients list
 #  Exports to a CSV file
+#  This solution is for Mavericks and Yosemite only as the database moved
+#  from ~/Library/Application Support/AddressBook to 
+#  /Library/Containers/com.apple.corerecents.recentsd/Data/Library/Recents/Recents
+#
+#  Special thanks to Rusty Myers at PSU for assistance in locating the new sqlitedb.
 
 
 #  Define our local user
@@ -25,11 +30,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 FILEOUTPUT="$DIR/$FILE"
 
 # Okay, robots. Do your thing.
-/usr/bin/sqlite3 /Users/"$MYUSER"/Library/Application\ Support/AddressBook/MailRecents-v4.abcdmr <<!
+/usr/bin/sqlite3 "/Users/$MYUSER/Library/Containers/com.apple.corerecents.recentsd/Data/Library/Recents/Recents" <<!
 .headers on
 .mode csv
 .output "$FILEOUTPUT"
-select ZLASTNAME, ZFIRSTNAME, ZEMAIL from ZABCDMAILRECENT;
+select display_name, address from contacts where kind = "email";
 !
 
 sleep 2
