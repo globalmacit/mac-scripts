@@ -7,39 +7,44 @@
 #
 #	Sets Computer Name, Local Host Name, and Host Name 
 #	on a standard OS X client system.
+#	
+#	This script assumes Watchman Monitoring (https://www.watchmanmonitoring.com)
+#	is installed and has a Group assigned.
 
 
 #	Provide the company abbreviated name.
-COMPANY="GlobalMac IT"
+COMPANY="defaults read /Library/MonitoringClient/ClientSettings ClientGroup | sed 's/[a-z][ ]*//g'"
 
 ### Let the robot do the work.
 #	Get the currently logged in user name.
 NAME=`finger $USER | egrep -o 'Name: [a-zA-Z0-9 ]{1,}' | cut -d ':' -f 2 | xargs echo`
 
-#	Grab some info from the system.
-SYSTEM=`system_profiler SPHardwareDataType | grep "Model Identifier:" | awk '{print $3;}' | sed 's/[0-9][,]*//g' | sed 's/Macmini/MM/g' | sed 's/MacBookPro/MBP/g' | sed 's/MacBookAir/MBA/g' | sed 's/MacBook/MB/g'`
+#	Get the hardware name from the system and abreviate it.
+SYSTEM=`system_profiler SPHardwareDataType | grep "Model Identifier:" | awk '{print $3;}' | \
+	sed 's/[0-9][,]*//g' | sed 's/Macmini/MM/g' | sed 's/MacBookPro/MBP/g' | sed 's/MacBookAir/MBA/g' | sed 's/MacBook/MB/g'`
 
 #	A simple function to adjust the case of the variable outputs.
 makelower() {
 echo $1$2 | tr '[:upper:]' '[:lower:]' | sed 's/ //g'
 }
 
+#	Create lower case versions of all names.
 L_NAME=`makelower $NAME` 
 L_COMPANY=`makelower $COMPANY`
 L_SYSTEM=`makelower $SYSTEM`
 
-sudo /usr/sbin/scutil --set ComputerName "$NAME $SYSTEM $COMPANY"
-sudo /usr/sbin/scutil --set LocalHostName $L_NAME-$L_SYSTEM-$L_COMPANY
-sudo /usr/sbin/scutil --set HostName $L_NAME-$L_SYSTEM-$L_COMPANY.local
+/usr/sbin/scutil --set ComputerName "$NAME $SYSTEM $COMPANY"
+/usr/sbin/scutil --set LocalHostName $L_NAME-$L_SYSTEM-$L_COMPANY
+/usr/sbin/scutil --set HostName $L_NAME-$L_SYSTEM-$L_COMPANY.local
 
 #	Tell me the results.
-status=$?
+STATUS=$?
 
-if [ $status == 0 ]; then
+if [ $STATUS == 0 ]; then
 	echo "Computer identity was changed successfully."
 	echo "$NAME $SYSTEM $COMPANY"
 	echo "$L_NAME-$L_SYSTEM-$L_COMPANY"
 	echo "$L_NAME-$L_SYSTEM-$L_COMPANY.local"
-elif [ $status != 0 ]; then
+elif [ $STATUS != 0 ]; then
 	echo "An error was encountered while attempting to change the computer identity. /usr/sbin/scutil exited $status."
 fi
