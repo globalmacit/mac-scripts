@@ -8,20 +8,23 @@
 #	Sets Computer Name, Local Host Name, and Host Name 
 #	on a standard OS X client system.
 #	
-#	This script assumes Watchman Monitoring (https://www.watchmanmonitoring.com)
+#	This script assumes Watchman Monitoring 
+#	(https://www.watchmanmonitoring.com)
 #	is installed and has a Group assigned.
 
 
 #	Provide the company abbreviated name.
 COMPANY="defaults read /Library/MonitoringClient/ClientSettings ClientGroup | sed 's/[a-z][ ]*//g'"
+/bin/echo "The abbreviated company name is $COMPANY"
 
-### Let the robot do the work.
 #	Get the currently logged in user name.
 NAME=`finger $USER | egrep -o 'Name: [a-zA-Z0-9 ]{1,}' | cut -d ':' -f 2 | xargs echo`
+/bin/echo "The current logged in user is $NAME"
 
 #	Get the hardware name from the system and abreviate it.
 SYSTEM=`system_profiler SPHardwareDataType | grep "Model Identifier:" | awk '{print $3;}' | \
 	sed 's/[0-9][,]*//g' | sed 's/Macmini/MM/g' | sed 's/MacBookPro/MBP/g' | sed 's/MacBookAir/MBA/g' | sed 's/MacBook/MB/g'`
+/bin/echo "The abbreviated computer identifier is $SYSTEM"
 
 #	A simple function to adjust the case of the variable outputs.
 makelower() {
