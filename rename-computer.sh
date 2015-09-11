@@ -18,8 +18,8 @@ COMPANY="defaults read /Library/MonitoringClient/ClientSettings ClientGroup | se
 /bin/echo "The abbreviated company name is $COMPANY"
 
 #	Get the currently logged in user name.
-NAME=`finger $USER | egrep -o 'Name: [a-zA-Z0-9 ]{1,}' | cut -d ':' -f 2 | xargs echo`
-/bin/echo "The current logged in user is $NAME"
+CURRENTUSER=`finger $USER | egrep -o 'Name: [a-zA-Z0-9 ]{1,}' | cut -d ':' -f 2 | xargs echo`
+/bin/echo "The current logged in user is $CURRENTUSER"
 
 #	Get the hardware name from the system and abreviate it.
 SYSTEM=`system_profiler SPHardwareDataType | grep "Model Identifier:" | awk '{print $3;}' | \
@@ -32,11 +32,11 @@ echo $1$2 | tr '[:upper:]' '[:lower:]' | sed 's/ //g'
 }
 
 #	Create lower case versions of all names.
-L_NAME=`makelower $NAME` 
+L_NAME=`makelower $CURRENTUSER` 
 L_COMPANY=`makelower $COMPANY`
 L_SYSTEM=`makelower $SYSTEM`
 
-/usr/sbin/scutil --set ComputerName "$NAME $SYSTEM $COMPANY"
+/usr/sbin/scutil --set ComputerName "$CURRENTUSER $SYSTEM $COMPANY"
 /usr/sbin/scutil --set LocalHostName $L_NAME-$L_SYSTEM-$L_COMPANY
 /usr/sbin/scutil --set HostName $L_NAME-$L_SYSTEM-$L_COMPANY.local
 
@@ -45,7 +45,7 @@ STATUS=$?
 
 if [ $STATUS == 0 ]; then
 	echo "Computer identity was changed successfully."
-	echo "$NAME $SYSTEM $COMPANY"
+	echo "$CURRENTUSER $SYSTEM $COMPANY"
 	echo "$L_NAME-$L_SYSTEM-$L_COMPANY"
 	echo "$L_NAME-$L_SYSTEM-$L_COMPANY.local"
 elif [ $STATUS != 0 ]; then
