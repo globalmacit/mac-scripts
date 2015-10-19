@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #	rename-computer.sh
-#	version: 0.2
+#	version: 0.5
 #	created: 06 Nov 2014
 #	author:	Tobias Morrison
 #
@@ -13,6 +13,12 @@
 #	This script assumes Watchman Monitoring 
 #	(https://www.watchmanmonitoring.com)
 #	is installed and has a Group assigned.
+#
+#	Modified 18 Oct 2015
+#	Changes: 
+#	Re-wrote to compact code.
+#	Added interactive controls for user name input.
+#	Added a log file at /Library/Management/Logs
 
 #### Set global variables ####
 #	Serial Number 
@@ -37,9 +43,9 @@ echo "**************************************************************"
 
 
 #### Begin the log file ####
-echo "########## RENAME COMPUTER ##########" >> "$fileoutput"
+echo "########## GLOBALMAC IT RENAME COMPUTER ##########" >> "$fileoutput"
 echo "" >> "$fileoutput"
-echo "This log was created by the rename-computer.sh script loacted at /Library/Management/gmit" >> "$fileoutput"
+echo "This log was created by the rename-computer.sh script loacted at /Library/Management/scripts" >> "$fileoutput"
 echo "" >> "$fileoutput"
 echo Date: `date "+%Y-%m-%d %l:%M:%S %p"`>> "$fileoutput"
 
@@ -120,7 +126,8 @@ if [ $STATUS == 0 ]; then
 	echo "The new Local Host Name is $changeLocalHostName" >> "$fileoutput"
 	echo "The new Host Name is $changeHostName" >> "$fileoutput"
 elif [ $STATUS != 0 ]; then
-	echo "An error was encountered while attempting to change the computer identity. /usr/sbin/scutil exited $status."
+	echo "An error was encountered while attempting to change the computer identity. scutil exited $status."
 	echo "" >> "$fileoutput"
-	echo "An error was encountered while attempting to change the computer identity. /usr/sbin/scutil exited $status." >> "$fileoutput"
+	echo "An error was encountered while attempting to change the computer identity. scutil exited $status." >> "$fileoutput"
+	echo "" >> "$fileoutput"
 fi
