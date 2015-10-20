@@ -29,23 +29,23 @@ tempfile="renameLog-$serialnumber.txt"
 fileoutput="/Library/Management/Logs/$tempfile"
 
 #### Give the user some instructions
-echo "**************************************************************"
-echo "*                                                            *"
-echo "*  This script will change the display and network names of  *"
-echo "*  this Mac. It requires administrator privledges to run.    *"
-echo "*  It also requires that Watchman is installed and the       *"
-echo "*  Client Group name set. You will be asked for the First    *"
-echo "*  and Last Name of the new user. If you make a mistake      *"
-echo "*  entering the names, cancel the script by using the key    *"
-echo "*  combo control + C.                                        *"
-echo "*                                                            *"
-echo "**************************************************************"
+echo "***********************************************************************"
+echo "*                                                                     *"
+echo "*  This script will change the display and network names of this Mac. *"
+echo "*  It requires root privledges to run. It also requires that          *"
+echo "*  Watchman (https://www.watchmanmonitoring.com) is installed and     *"
+echo "*  the Watchman Client Group name set. You will be asked for the      *"
+echo "*  First and Last Name of the new user. If you make a mistake         *"
+echo "*  entering the names, cancel the script by using the key combo       *"
+echo "*  control + C.                                                       *"
+echo "*                                                                     *"
+echo "***********************************************************************"
 
 
 #### Begin the log file ####
 echo "########## GLOBALMAC IT RENAME COMPUTER ##########" >> "$fileoutput"
 echo "" >> "$fileoutput"
-echo "This log was created by the rename-computer.sh script loacted at /Library/Management/scripts" >> "$fileoutput"
+echo "This log was created by the rename-computer.sh script loacted at /Library/Management/bin" >> "$fileoutput"
 echo "" >> "$fileoutput"
 echo Date: `date "+%Y-%m-%d %l:%M:%S %p"`>> "$fileoutput"
 
@@ -54,7 +54,10 @@ computerName=`/usr/sbin/scutil --get ComputerName`
 localHostName=`/usr/sbin/scutil --get LocalHostName`
 hostName=`/usr/sbin/scutil --get HostName`
 
-# Log the current settings
+# Log and display the current settings
+echo "The current Computer Name is $computerName."
+echo "The current Local Host Name is $localHostName."
+echo "The current Host Name is $hostName."
 echo "" >> "$fileoutput"
 echo "The current Computer Name is $computerName." >> "$fileoutput"
 echo "The current Local Host Name is $localHostName." >> "$fileoutput"
@@ -121,6 +124,10 @@ STATUS=$?
 
 if [ $STATUS == 0 ]; then
 	echo "Computer identity was changed successfully."
+	echo "" >> "$fileoutput"
+	echo "The new Computer Name is $changeComputerName"
+	echo "The new Local Host Name is $changeLocalHostName"
+	echo "The new Host Name is $changeHostName"
 	echo "" >> "$fileoutput"
 	echo "The new Computer Name is $changeComputerName" >> "$fileoutput"
 	echo "The new Local Host Name is $changeLocalHostName" >> "$fileoutput"
