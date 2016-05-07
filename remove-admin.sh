@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #	remove-admin.sh
-#	version: 0.1
 #	created: 10 Dec 2014
 #	author:	Tobias Morrison
 #
@@ -10,6 +9,10 @@
 #	Sourced from Greg Neagle's post: http://managingosx.wordpress.com/2010/01/14/add-a-user-to-the-admin-group-via-command-line-3-0/
 #
 #	-d removes the user from the group 'admin'. Replace -d with -a to add the user to the 'admin' group.
+#
+#	CHANGES:
+#	0.2		//	Make interactive
+#	0.1		// 	Initial release
 
 ## Make sure script is run by root
 if [[ $EUID -ne 0 ]]; then
