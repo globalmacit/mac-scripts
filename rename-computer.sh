@@ -28,24 +28,24 @@ fi
 
 #### Set global variables ####
 #	Serial Number 
-serialnumber=$(system_profiler SPHardwareDataType | grep "Serial Number"| tr -d "Serial Number (system): ")
+serialnumber=$(system_profiler SPHardwareDataType | grep "Serial Number" | tr -d "Serial Number (system): ")
 #	Temp file name
 tempfile="renameLog-$serialnumber.txt"
 #	File output path
 fileoutput="/Library/Management/Logs/$tempfile"
 
 #### Give the user some instructions
-echo "***********************************************************************"
-echo "*                                                                     *"
-echo "*  This script will change the display and network names of this Mac. *"
-echo "*  It requires root privledges to run. It also requires that          *"
-echo "*  Watchman (https://www.watchmanmonitoring.com) is installed and     *"
-echo "*  the Watchman Client Group name set. You will be asked for the      *"
-echo "*  First and Last Name of the new user. If you make a mistake         *"
-echo "*  entering the names, cancel the script by using the key combo       *"
-echo "*  control + C.                                                       *"
-echo "*                                                                     *"
-echo "***********************************************************************"
+echo "-----------------------------------------------------------------------"
+echo "|                                                                     |"
+echo "|  This script will change the display and network names of this Mac. |"
+echo "|  It requires root privledges to run. It also requires that          |"
+echo "|  Watchman (https://www.watchmanmonitoring.com) is installed and     |"
+echo "|  the Watchman Client Group name set. You will be asked for the      |"
+echo "|  First and Last Name of the new user. If you make a mistake         |"
+echo "|  entering the names, cancel the script by using the key combo       |"
+echo "|  control + C.                                                       |"
+echo "|                                                                     |"
+echo "-----------------------------------------------------------------------"
 
 
 #### Begin the log file ####
