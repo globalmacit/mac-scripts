@@ -17,11 +17,22 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-#	Add the user's shortname
-SHORTNAME="user"
+#### Give the user some instructions
+echo "-----------------------------------------------------------------------"
+echo "|                                                                     |"
+echo "|  This script will demote an admin account to a standard account.    |"
+echo "|  It requires root privledges to run. You will be asked for the      |"
+echo "|  user shortname. If you make a mistake, cancel the script by        |"
+echo "|  by using the key combo control + C.                                |"
+echo "|                                                                     |"
+echo "-----------------------------------------------------------------------"
+
+## Ask the admin for the user name
+echo -n "Enter user shortname: "
+read shname
 
 #	Let the robot do the work.
-/usr/sbin/dseditgroup -o edit -d $SHORTNAME -t user admin
+/usr/sbin/dseditgroup -o edit -d "$shname" -t user admin
 
 #	Tell me the results.
 STATUS=$?
