@@ -20,6 +20,12 @@
 #	Added interactive controls for user name input.
 #	Added a log file at /Library/Management/Logs
 
+## Make sure script is run by root
+if [[ $EUID -ne 0 ]]; then
+    echo "Script must be run as root" 1>&2
+    exit 1
+fi
+
 #### Set global variables ####
 #	Serial Number 
 serialnumber=$(system_profiler SPHardwareDataType | grep "Serial Number"| tr -d "Serial Number (system): ")
