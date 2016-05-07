@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #	rename-computer.sh
-#	version: 0.5
 #	created: 06 Nov 2014
 #	author:	Tobias Morrison
 #
@@ -14,11 +13,12 @@
 #	(https://www.watchmanmonitoring.com)
 #	is installed and has a Group assigned.
 #
-#	Modified 18 Oct 2015
 #	Changes: 
-#	Re-wrote to compact code.
-#	Added interactive controls for user name input.
-#	Added a log file at /Library/Management/Logs
+#
+#	0.5.1	//	Added check for root. Added forth character to client abbreviaton.
+#	0.5 	//	Re-wrote to compact code.
+#	0.3 	//	Added interactive controls for user name input.
+#	0.2		//	Added a log file at /Library/Management/Logs
 
 ## Make sure script is run by root
 if [[ $EUID -ne 0 ]]; then
@@ -84,7 +84,7 @@ watchmanName="/Library/MonitoringClient/ClientSettings"
 
 #	Use sed to remove all spaces and lowercase letters
 noSpace() {
-	echo $1$2$3 | sed 's/[a-z][ ]*//g'
+	echo $1$2$3$4 | sed 's/[a-z][ ]*//g'
 }
 
 #	Provide the company abbreviated name
