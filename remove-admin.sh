@@ -11,6 +11,12 @@
 #
 #	-d removes the user from the group 'admin'. Replace -d with -a to add the user to the 'admin' group.
 
+## Make sure script is run by root
+if [[ $EUID -ne 0 ]]; then
+    echo "Script must be run as root" 1>&2
+    exit 1
+fi
+
 #	Add the user's shortname
 SHORTNAME="user"
 
