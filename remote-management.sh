@@ -22,5 +22,5 @@
 #	Restart Remote Management to accept the changes
 /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent
 
-#	Turn on remote login
+#	Turn on ssh
 /usr/sbin/systemsetup -f -setremotelogin on
