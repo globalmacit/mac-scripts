@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>tobias</string>
+		<key>creation_date</key>
+		<date>2017-08-23T19:03:23Z</date>
+		<key>munki_version</key>
+		<string>2.8.2.2855</string>
+		<key>os_version</key>
+		<string>10.12.6</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+	</array>
+	<key>category</key>
+	<string>Management</string>
+	<key>description</key>
+	<string>Configures access to ARD for GlobalMac IT access.</string>
+	<key>developer</key>
+	<string>Tobias Morrison</string>
+	<key>display_name</key>
+	<string>Enable Apple Remote Desktop</string>
+	<key>installcheck_script</key>
+	<string>#!/bin/sh
+
+# munki install_check script
+# exit status of 0 means install needs to run
+# exit status 1 means no installation necessary
+
+# adapted scripts from  here: https://jamfnation.jamfsoftware.com/discussion.html?id=1989
+
+# check if ARD is running
+
+ardrunning=$(/bin/ps ax | /usr/bin/grep -c -i "[Aa]rdagent")
+
+if [[ $ardrunning -eq 0 ]]; then
+	echo "ARD not running"
+	exit 0
+fi
+
+# check that gadmin account exists
+
+gadmin_acct=$(/usr/bin/dscl . list /Users UniqueID | /usr/bin/awk '$2 &gt; 498 { print $1 }' | /usr/bin/grep gadmin)
+
+if [[ $gadmin_acct != *gadmin* ]]; then
+	echo "gadmin does not exist"
+	exit 1
+fi
+
+# All Users access should be off
+
+all_users=$(/usr/bin/defaults read /Library/Preferences/com.apple.RemoteManagement ARD_AllLocalUsers 2&gt;/dev/null)
+
+if [[ $all_users -eq 1 ]]; then
+	echo "All Users Access Enabled"
+	exit 0
+fi
+
+# Check if gadmin account is privileged
+
+ard_admins=$(/usr/bin/dscl . list /Users naprivs | cut -d ' ' -f 1)
+
+if [[ $ard_admins != *gadmin* ]]; then
+	echo "gadmin is not an ARD admin"
+	exit 0
+fi
+
+echo "everything looks great"
+
+exit 1</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.4.0</string>
+	<key>name</key>
+	<string>EnableARD</string>
+	<key>notes</key>
+	<string>Removes all accounts from ARD access except gadmin.</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/sh
+
+# use kickstart to enable full Remote Desktop access
+# for more info, see: http://support.apple.com/kb/HT2370
+
+kickstart="/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart"
+
+#enable ARD access
+$kickstart -configure -access -on -users gadmin -privs -all
+
+$kickstart -configure -allowAccessFor -specifiedUsers
+
+$kickstart -activate
+
+exit 0</string>
+	<key>unattended_install</key>
+	<true/>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
+
