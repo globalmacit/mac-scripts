@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #	rename-computer.sh
-#	version: 0.5
 #	created: 06 Nov 2014
 #	author:	Tobias Morrison
 #
@@ -14,32 +13,39 @@
 #	(https://www.watchmanmonitoring.com)
 #	is installed and has a Group assigned.
 #
-#	Modified 18 Oct 2015
 #	Changes: 
-#	Re-wrote to compact code.
-#	Added interactive controls for user name input.
-#	Added a log file at /Library/Management/Logs
+#
+#	0.5.1	//	Added check for root. Added forth character to client abbreviaton.
+#	0.5 	//	Re-wrote to compact code.
+#	0.3 	//	Added interactive controls for user name input.
+#	0.2		//	Added a log file at /Library/Management/Logs
+
+## Make sure script is run by root
+if [[ $EUID -ne 0 ]]; then
+    echo "Script must be run as root" 1>&2
+    exit 1
+fi
 
 #### Set global variables ####
 #	Serial Number 
-serialnumber=$(system_profiler SPHardwareDataType | grep "Serial Number"| tr -d "Serial Number (system): ")
+serialnumber=$(system_profiler SPHardwareDataType | grep "Serial Number" | tr -d "Serial Number (system): ")
 #	Temp file name
 tempfile="renameLog-$serialnumber.txt"
 #	File output path
 fileoutput="/Library/Management/Logs/$tempfile"
 
 #### Give the user some instructions
-echo "***********************************************************************"
-echo "*                                                                     *"
-echo "*  This script will change the display and network names of this Mac. *"
-echo "*  It requires root privledges to run. It also requires that          *"
-echo "*  Watchman (https://www.watchmanmonitoring.com) is installed and     *"
-echo "*  the Watchman Client Group name set. You will be asked for the      *"
-echo "*  First and Last Name of the new user. If you make a mistake         *"
-echo "*  entering the names, cancel the script by using the key combo       *"
-echo "*  control + C.                                                       *"
-echo "*                                                                     *"
-echo "***********************************************************************"
+echo "-----------------------------------------------------------------------"
+echo "|                                                                     |"
+echo "|  This script will change the display and network names of this Mac. |"
+echo "|  It requires root privledges to run. It also requires that          |"
+echo "|  Watchman (https://www.watchmanmonitoring.com) is installed and     |"
+echo "|  the Watchman Client Group name set. You will be asked for the      |"
+echo "|  First and Last Name of the new user. If you make a mistake         |"
+echo "|  entering the names, cancel the script by using the key combo       |"
+echo "|  control + C.                                                       |"
+echo "|                                                                     |"
+echo "-----------------------------------------------------------------------"
 
 
 #### Begin the log file ####
@@ -78,7 +84,7 @@ watchmanName="/Library/MonitoringClient/ClientSettings"
 
 #	Use sed to remove all spaces and lowercase letters
 noSpace() {
-	echo $1$2$3 | sed 's/[a-z][ ]*//g'
+	echo $1$2$3$4 | sed 's/[a-z][ ]*//g'
 }
 
 #	Provide the company abbreviated name
