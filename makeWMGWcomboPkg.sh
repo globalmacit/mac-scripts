@@ -7,7 +7,7 @@
 wmServer="globalmacit" #This is the subdomain for your watchman server. Eg. if your watchman server is acme.monitoringclient.com, enter "acme"
 gwInstaller="$HOME/bin/onboarding/GlobalMacIT Maintenance.pkg" #This is the path to where you keep the GW installer on your machine, eg. /Users/user/Desktop/GruntworkInstaller.pkg
 
-wmClient="The Collaborative Law Group" #the WM client group name
+wmClient="!! CLIENT NAME !!" #the WM client group name
 outputPath="/tmp/unsignedInstaller-$wmClient.pkg" #full output path for the finished pkg
 signedOutputPath="/tmp/ManagementInstaller-$wmClient.pkg"
 
@@ -52,7 +52,7 @@ if [ $? -ne 0 ]; then
 	echo "Problem building the metapkg package."
 	exit 5
 else
-	productsign --sign '98A04FA295176E32501713C4A70C206831E9254D "Developer ID Application: Tobias Morrison (LCXGBRS4V3)"' "$outputPath" "$signedOutputPath"
+	productsign --sign "!! DEVELOPER INSTALLER ID !!" "$outputPath" "$signedOutputPath"
 	if [ $? -ne 0 ]; then
 		echo "Problem signing the package."
 		exit 6
