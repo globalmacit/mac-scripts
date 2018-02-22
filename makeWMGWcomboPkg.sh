@@ -4,11 +4,12 @@
 ### then make a meta pkg with both the Watchman installer and the Gruntwork installer
 
 # EDIT THESE!!!!!
-wmServer="CHANGE THIS" #This is the subdomain for your watchman server. Eg. if your watchman server is acme.monitoringclient.com, enter "acme"
-gwInstaller="CHANGE THIS" #This is the path to where you keep the GW installer on your machine, eg. /Users/user/Desktop/GruntworkInstaller.pkg
+wmServer="globalmacit" #This is the subdomain for your watchman server. Eg. if your watchman server is acme.monitoringclient.com, enter "acme"
+gwInstaller="$HOME/bin/onboarding/GlobalMacIT Maintenance.pkg" #This is the path to where you keep the GW installer on your machine, eg. /Users/user/Desktop/GruntworkInstaller.pkg
 
-wmClient="CHANGE THIS" #the WM client group name
-outputPath="/tmp/comboGwWmInstaller-$wmClient.pkg" #full output path for the finished pkg
+wmClient="The Collaborative Law Group" #the WM client group name
+outputPath="/tmp/unsignedInstaller-$wmClient.pkg" #full output path for the finished pkg
+signedOutputPath="/tmp/ManagementInstaller-$wmClient.pkg"
 
 ## Sanity checks
 ## Make sure script is run by root
@@ -51,12 +52,18 @@ if [ $? -ne 0 ]; then
 	echo "Problem building the metapkg package."
 	exit 5
 else
-	echo "Success! Your combo installer pkg is done: $outputPath"
-	# Show me the money
-	/usr/bin/open "/tmp"
-	# Tidy up
-	/bin/rm /tmp/1wmInstall.pkg
-	/bin/rm -rf /tmp/pkgScripts
+	productsign --sign '98A04FA295176E32501713C4A70C206831E9254D "Developer ID Application: Tobias Morrison (LCXGBRS4V3)"' "$outputPath" "$signedOutputPath"
+	if [ $? -ne 0 ]; then
+		echo "Problem signing the package."
+		exit 6
+	else
+		echo "Success! Your combo installer pkg is done: $signedOutputPath"
+		# Show me the money
+		/usr/bin/open "/tmp"
+		# Tidy up
+		/bin/rm /tmp/1wmInstall.pkg
+		/bin/rm -rf /tmp/pkgScripts
+	fi
 fi
 
 exit 0
