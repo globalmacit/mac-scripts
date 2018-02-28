@@ -9,7 +9,8 @@ gwInstaller="$HOME/bin/onboarding/GlobalMacIT Maintenance.pkg" #This is the path
 
 wmClient="!! CLIENT NAME !!" #the WM client group name
 outputPath="/tmp/unsignedInstaller-$wmClient.pkg" #full output path for the finished pkg
-signedOutputPath="/tmp/ManagementInstaller-$wmClient.pkg"
+signedOutputPath="/tmp/ManagementInstaller-$wmClient.pkg" #full output path for the signed installer
+zippedOutput="Installer-$wmClient.zip" # name of the final zip file
 
 ## Sanity checks
 ## Make sure script is run by root
@@ -53,16 +54,19 @@ if [ $? -ne 0 ]; then
 	exit 5
 else
 	productsign --sign "!! DEVELOPER INSTALLER ID !!" "$outputPath" "$signedOutputPath"
+	zip "$zippedOutput" "$signedOutputPath"
 	if [ $? -ne 0 ]; then
 		echo "Problem signing the package."
 		exit 6
 	else
-		echo "Success! Your combo installer pkg is done: $signedOutputPath"
+		sleep 2
+		echo "Success! Your combo installer pkg is done: "/tmp/$zippedOutput"
 		# Show me the money
 		/usr/bin/open "/tmp"
 		# Tidy up
 		/bin/rm /tmp/1wmInstall.pkg
 		/bin/rm -rf /tmp/pkgScripts
+		/bin/rm "$outputPath"
 	fi
 fi
 
