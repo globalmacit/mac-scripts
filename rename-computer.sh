@@ -15,6 +15,7 @@
 #
 #	Changes: 
 #
+#	0.5.3	//	Moar characters
 #   0.5.2   //  Added fifth character to client abbreviaton.
 #	0.5.1	//	Added check for root. Added forth character to client abbreviaton.
 #	0.5 	//	Re-wrote to compact code.
@@ -85,7 +86,7 @@ watchmanName="/Library/MonitoringClient/ClientSettings"
 
 #	Use sed to remove all spaces and lowercase letters
 noSpace() {
-	echo $1$2$3$4$5 | sed 's/[a-z][ ]*//g'
+	echo $1$2$3$4$5$6$7$8 | sed 's/[a-z][ ]*//g'
 }
 
 #	Provide the company abbreviated name
